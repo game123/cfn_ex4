@@ -1,0 +1,24 @@
+version: 2.1
+orbs:
+  # Choose either one of the orbs below
+  # Declare a dependency on the welcome-orb
+  # welcome: circleci/welcome-orb@0.4.1
+  aws-cli: circleci/aws-cli@2.0.3
+
+jobs:
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure backen infrastructure exist
+          command: |
+            aws clouformation deploy \
+                --template-file template.yml \ 
+                --stack-name my-stack
+
+workflows:
+  my_workflow:
+    jobs:
+      - create_infrastructure
